@@ -1,0 +1,39 @@
+<div class="author">
+    <h1 class="author_heading">Hi, I am Enny</h1>
+</div>
+
+<div class="tambah-data">
+    <a href="/add-note" class="button">+ Add New Notes</a>
+</div>
+
+<h2 class="notes__heading">Latest Notes</h2>
+
+<!-- <div class="notes"> -->
+    <% data.forEach(post => { %>
+    <div class="row">
+    <div class="col-10">
+        <a href="/note/<%= post._id %>" <span><%= post.title %></span>
+                <span class="date-col">
+                    <br><%= post.createdAt.toDateString() %>
+                </span>
+        </a>
+    </div>
+    <div class="col-1">
+        <a href="/edit-note/<%= post._id %>" class="btn-edit btn">Edit</a>
+    </div>
+    <div class="col-1">
+        <form action="/delete-note/<%= post._id %>?_method=DELETE" method="POST">
+            <input type="submit" value="Delete" class="btn-delete btn">
+        </form>
+    </div>
+</div>
+<% }) %>
+<!-- </div> -->
+
+
+
+<% if (nextPage !== null) { %>
+<a href="/?page=<%= nextPage %>" class="pagination">&lt; View Older Notes</a>
+<% } %>
+
+<!-- </section> -->
