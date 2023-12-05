@@ -6,6 +6,7 @@
     --gray-light: #E4E4E4;
     --red: #B30000;
     --yellow: #e6a904;
+    --brown: #b45100;
     --font-size-base: 1rem;
     --font-size-md: clamp(1.25rem, 0.61vw + 1.1rem, 1.58rem);
     --font-size-lg: clamp(1.56rem, 1vw + 1.31rem, 1.58rem);
@@ -260,14 +261,29 @@ img {
 }
 
 .pagination {
+    font-size: var(--font-size-base);
+    color: var(--gray);
+    text-decoration: none;
+    margin-top: 40px;
+    display: flex;
+    justify-content:center;
+    transition: filter 0.1s;
+}
+
+.pagination:hover {
+    color: var(--black);
+}
+
+.pagination-back {
     font-size: 1.3rem;
     color: var(--gray);
     text-decoration: none;
     margin-top: 40px;
     display: inline-block;
+    text-align: center;
 }
 
-.pagination:hover {
+.pagination-back:hover {
     color: var(--black);
 }
 
@@ -308,6 +324,7 @@ img {
     right: 0;
     color: var(--gray-light);
     padding: 15px;
+    cursor: pointer;
 }
 
 /* Dashboard Admin */
@@ -316,6 +333,79 @@ img {
     justify-content: space-between;
     align-items: center;
 }
+
+.admin-todo {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    /* font-size: clamp(1.13rem, calc(1.08rem + 0.22vw), 1.25rem);  */
+}
+
+.admin-todo-controls form {
+    display: inline-block;
+}
+
+.admin-todo-controls a {
+    display: inline-block;
+}
+
+.admin-todo-controls btn {
+    display: inline-block;
+    background-color: var(--black);
+    color: var(--gray-light);
+    border: 0;
+    text-decoration: none;
+    padding: 4px 8px;
+    line-height: 2;
+}
+
+.admin-todo li {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 30px;
+    align-items: center;
+    transition: filter 0.1s;
+}
+
+.admin-todo li:not(:last-child) {
+    border-bottom: 1px solid var(--gray-light);
+}
+
+.admin-todo li:hover {
+    filter: none;
+}
+
+.admin-todo:hover li {
+    filter: blur(3px);
+}
+
+.admin-todo:hover li:hover {
+    filter: none;
+}
+
+.btn-delete-todo {
+    padding: 7px 16px;
+    background-color: var(--red);
+    font-size: var(--font-size-base);
+}
+
+.btn-edit-todo {
+    padding: 4px 16px;
+    background-color: var(--yellow);
+}
+
+/* Create a custom checkbox */
+.admin-todo.checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 25px;
+    width: 25px;
+    background-color: #eee;
+    margin-top: 80px;
+  }
 
 .admin-notes {
     list-style-type: none;
@@ -448,3 +538,31 @@ img {
 }
 .col-11 {width: 91.66%;}
 .col-12 {width: 100%;}
+
+/* ToDo - Page */
+.todo {
+    padding: 10px 0;
+    text-align: center;
+}
+
+.todo__heading {
+    margin-top: 10px;
+    margin-bottom: 5px;
+    color: var(--brown);
+}
+
+.todo__body {
+    font-size: var(--font-size-md);
+    margin: 5px 0 40px 0;
+}
+
+.todo-input{
+    font-family: 'Poppins', sans-serif;
+    font-size: var(--font-size-base);
+    display: inline-block !important;
+    box-sizing: border-box;
+    width: 50% !important;
+    padding: 0.6rem 0.6rem !important;
+    margin-bottom: 1rem;
+}
+

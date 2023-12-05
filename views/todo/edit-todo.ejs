@@ -1,0 +1,10 @@
+<div class="todo">
+    <h1 class="todo__heading">To-Do List</h1>
+</div>
+
+        <div class="tambah-data">
+            <form action="/edit-todo/<%= data._id %>?_method=PUT" method="POST">
+                <input type="text" placeholder="Note Title" name="todoList" class="todo-input" value="<%= data.todoList %>">
+                <input type="submit" value="Update" class="btn">
+            </form>
+        </div>

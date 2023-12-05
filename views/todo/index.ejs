@@ -1,1 +1,31 @@
-<h1>TODO</h1>
+<div class="todo">
+    <h1 class="todo__heading">To-Do List</h1>
+</div>
+
+<div class="tambah-data">
+    <form action="/todo" method="POST">
+        <input type="text" placeholder="Note Title" name="todoList" class="todo-input">
+        <input type="submit" value="Add" class="btn">
+    </form>
+</div>
+
+<ul class="admin-todo">
+    <% data.forEach(todo => { %>
+    <li>
+        <%=  todo.todoList %>
+        <div class="admin-todo-controls">
+            <a href="/edit-todo/<%= todo._id %>" class="btn-edit-todo btn">Edit</a>
+            <form action="/delete-todo/<%= todo._id %>?_method=DELETE" method="POST">
+                <input type="submit" value="Delete" class="btn-delete-todo btn">
+            </form>
+        </div>
+    </li>
+    <% }) %>
+</ul>
+
+<% if (nextPage != null) { %>
+<a href="/todo?page=<%= nextPage %>" class="pagination">&lt; View Older To-Do List</a>
+<a href="/todo?page=<%= prevPage %>" class="pagination">&lt; Back To-Do List</a>
+<% } else { %>
+<a href="/todo?page=<%= prevPage %>" class="pagination">&lt; Back To-Do List</a>
+<% } %>

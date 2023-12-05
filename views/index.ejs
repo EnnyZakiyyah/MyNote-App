@@ -1,5 +1,5 @@
 <div class="author">
-    <h1 class="author_heading">Hi, I am Enny</h1>
+    <h1 class="author__heading">Make Your Note Here!</h1>
 </div>
 
 <div class="tambah-data">
@@ -8,7 +8,7 @@
 
 <h2 class="notes__heading">Latest Notes</h2>
 
-<!-- <div class="notes"> -->
+
     <% data.forEach(post => { %>
     <div class="row">
     <div class="col-10">
@@ -28,12 +28,11 @@
     </div>
 </div>
 <% }) %>
-<!-- </div> -->
-
 
 
 <% if (nextPage !== null) { %>
 <a href="/?page=<%= nextPage %>" class="pagination">&lt; View Older Notes</a>
-<% } %>
-
-<!-- </section> -->
+<a href="/?page=<%= prevPage %>" class="pagination">&lt; Back Notes</a>
+<% } else { %>
+    <a href="/?page=<%= prevPage %>" class="pagination">&lt; Back Notes</a>
+    <% } %>

@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Post = require('../models/Post');
+const Todo = require('../models/Todo');
 
 /** 
  * GET /
@@ -25,16 +26,18 @@ router.get('', async (req, res) => {
             .limit(perPage)
             .exec();
 
-        // console.log(Post.count());
         const count = await Post.estimatedDocumentCount();
         const nextPage = parseInt(page) + 1;
+        const prevPage = parseInt(page) - 1;
         const hasNextPage = nextPage <= Math.ceil(count / perPage);
+        const hasPrevPage = prevPage <= Math.ceil(count / perPage);
 
         res.render('index', {
             locals,
             data,
             current: page,
-            nextPage: hasNextPage ? nextPage : null
+            nextPage: hasNextPage ? nextPage : null,
+            prevPage: hasPrevPage ? prevPage : null
         });
     } catch (error) {
         console.log(error);
@@ -42,23 +45,6 @@ router.get('', async (req, res) => {
 
 
 });
-
-// router.get('', async (req, res) => {
-//     const locals = {
-//         title: "My Note",
-//         description: "Simple Notes created with NodeJS, Express & MongoDB."
-//     }
-
-//     try {
-//         const data = await Post.find();
-//         res.render('index', {locals, data});
-//         // console.log(data);
-//     } catch (error) {
-//         console.log(error);
-//     }
-
-
-// });
 
 
 /** 
@@ -83,7 +69,6 @@ router.get('/note/:id', async (req, res) => {
             locals,
             data
         });
-        // console.log(data);
     } catch (error) {
         console.log(error);
     }
@@ -124,7 +109,6 @@ router.post('/search', async (req, res) => {
             data,
             locals
         });
-        // console.log(data);
     } catch (error) {
         console.log(error);
     }
@@ -146,7 +130,6 @@ router.get('/add-note', async (req, res) => {
         res.render('note/add-note', {
             locals
         });
-        // console.log(data);
     } catch (error) {
         console.log(error);
     }
@@ -200,7 +183,6 @@ router.get('/edit-note/:id', async (req, res) => {
             data,
         });
 
-        // console.log(data);
     } catch (error) {
         console.log(error);
     }
@@ -245,35 +227,117 @@ router.delete('/delete-note/:id', async (req, res) => {
  * GET /
  * TODO
  */
-router.get('/todo', (req, res) => {
-    res.render('todo/index');
+router.get('/todo', async (req, res) => {
+    try {
+
+        let perPage = 10;
+        let page = req.query.page || 1;
+        const data = await Todo.aggregate([{
+                $sort: {
+                    createAt: -1
+                }
+            }])
+            .skip(perPage * page - perPage)
+            .limit(perPage)
+            .exec();
+
+        const count = await Todo.estimatedDocumentCount();
+        const nextPage = parseInt(page) + 1;
+        const prevPage = parseInt(page) - 1;
+        const hasNextPage = nextPage <= Math.ceil(count / perPage);
+        const hasPrevPage = prevPage <= Math.ceil(count / perPage);
+
+        res.render('todo/index', {
+            data,
+            current: page,
+            nextPage: hasNextPage ? nextPage : null,
+            prevPage: hasPrevPage ? prevPage : null
+    });
+    } catch (error) {
+        console.log(error);
+    }
 });
 
+/** 
+ * POST /
+ * TODO
+ */
+router.post('/todo', async (req, res) => {
 
-// function insertPostData () {
-//     Post.insertMany([
-//         {
-//             title: "Building a Note",
-//             body: "This is the body text"
-//         },
-//         {
-//             title: "Make a Note with Node JS",
-//             body: "Install Node JS"
-//         },
-//         {
-//             title: "Make a UI with Express",
-//             body: "Install Express adn use EJS"
-//         },
-//         {
-//             title: "Make a Connection with Database",
-//             body: "Use databse with MongoDB and install it"
-//         },
-//         {
-//             title: "Make a UIIIIIII",
-//             body: "learn on google for make a UI with EJS"
-//         },
-//     ])
-// }
-// insertPostData();
+    try {
+
+        try {
+            const newTodo = new Todo({
+                todoList: req.body.todoList
+            });
+            await Todo.create(newTodo);
+            res.redirect('/todo');
+
+        } catch (error) {
+            console.log(error);
+        }
+
+    } catch (error) {
+        console.log(error);
+    }
+});
+
+/** 
+ * GET /
+ * Todo - Edit Todo
+ */
+router.get('/edit-todo/:id', async (req, res) => {
+
+    try {
+        
+        const locals = {
+            title: "Edit Todo"
+        }
+
+        const data = await Todo.findOne({ _id: req.params.id });
+
+        res.render('todo/edit-todo', {
+            locals,
+            data,
+        });
+
+    } catch (error) {
+        console.log(error);
+    }
+});
+
+/** 
+ * PUT /
+ * Todo - Edit Todo
+ */
+router.put('/edit-todo/:id', async (req, res) => {
+
+    try {
+        
+        await Todo.findByIdAndUpdate(req.params.id, {
+            todoList: req.body.todoList,
+            updatedAt: Date.now()
+        });
+
+        res.redirect('/todo');
+
+    } catch (error) {
+        console.log(error);
+    }
+});
+
+/** 
+ * DELETE /
+ * Todo - Delete Todo
+ */
+router.delete('/delete-todo/:id', async (req, res) => {
+    try {
+        await Todo.deleteOne( { _id: req.params.id } );
+        res.redirect('/todo')
+    } catch (error) {
+        console.log(error);
+    }
+});
+
 
 module.exports = router;
