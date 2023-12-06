@@ -16,7 +16,7 @@ router.get('', async (req, res) => {
 
         let perPage = 5;
         let page = req.query.page || 1;
-        // console.log(Post);
+
         const data = await Post.aggregate([{
                 $sort: {
                     createAt: -1
@@ -42,7 +42,6 @@ router.get('', async (req, res) => {
     } catch (error) {
         console.log(error);
     }
-
 
 });
 
@@ -156,7 +155,6 @@ router.post('/add-note', async (req, res) => {
             console.log(error);
         }
 
-        // console.log(data);
     } catch (error) {
         console.log(error);
     }
@@ -204,7 +202,6 @@ router.put('/edit-note/:id', async (req, res) => {
 
         res.redirect('/');
 
-        // console.log(data);
     } catch (error) {
         console.log(error);
     }
